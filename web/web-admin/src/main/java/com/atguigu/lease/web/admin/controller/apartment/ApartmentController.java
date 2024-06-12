@@ -68,7 +68,8 @@ public class ApartmentController {
     @Operation(summary = "根据区县id查询公寓信息列表")
     @GetMapping("listInfoByDistrictId")
     public Result<List<ApartmentInfo>> listInfoByDistrictId(@RequestParam Long id) {
-        return Result.ok();
+        List<ApartmentInfo> list = apartmentInfoService.lambdaQuery().eq(ApartmentInfo::getDistrictId, id).list();
+        return Result.ok(list);
     }
 }
 
