@@ -4,9 +4,12 @@ import com.atguigu.lease.model.entity.*;
 import com.atguigu.lease.model.enums.ItemType;
 import com.atguigu.lease.web.admin.mapper.ApartmentInfoMapper;
 import com.atguigu.lease.web.admin.service.*;
+import com.atguigu.lease.web.admin.vo.apartment.ApartmentItemVo;
+import com.atguigu.lease.web.admin.vo.apartment.ApartmentQueryVo;
 import com.atguigu.lease.web.admin.vo.apartment.ApartmentSubmitVo;
 import com.atguigu.lease.web.admin.vo.graph.GraphVo;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,9 +35,11 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
     private ApartmentLabelService apartmentLabelService;
     @Autowired
     private ApartmentFeeValueService apartmentFeeValueService;
+    @Autowired
+    private ApartmentInfoMapper apartmentInfoMapper;
 
     @Override
-    public void saveOrUpdateAparment(ApartmentSubmitVo apartmentSubmitVo) {
+    public void saveOrUpdateApartment(ApartmentSubmitVo apartmentSubmitVo) {
         // 1.先判断是新增还是修改操作（公寓id是否为空）
         boolean isUpdate = apartmentSubmitVo.getId() != null;
         // 2.新增或者删除公寓信息
@@ -117,6 +122,12 @@ public class ApartmentInfoServiceImpl extends ServiceImpl<ApartmentInfoMapper, A
             }
             apartmentFeeValueService.saveBatch(apartmentFeeValueList);
         }
+    }
+
+    @Override
+    public IPage<ApartmentItemVo> pageApartmentItemByQuery(IPage<ApartmentItemVo> page, ApartmentQueryVo queryVo) {
+
+        return apartmentInfoMapper.pageApartmentItemByQuery(page, queryVo);
     }
 }
 
