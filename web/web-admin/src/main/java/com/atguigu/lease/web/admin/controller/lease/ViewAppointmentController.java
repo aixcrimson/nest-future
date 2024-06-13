@@ -2,6 +2,7 @@ package com.atguigu.lease.web.admin.controller.lease;
 
 
 import com.atguigu.lease.common.result.Result;
+import com.atguigu.lease.model.entity.ViewAppointment;
 import com.atguigu.lease.model.enums.AppointmentStatus;
 import com.atguigu.lease.web.admin.service.ViewAppointmentService;
 import com.atguigu.lease.web.admin.vo.appointment.AppointmentQueryVo;
@@ -33,6 +34,10 @@ public class ViewAppointmentController {
     @Operation(summary = "根据id更新预约状态")
     @PostMapping("updateStatusById")
     public Result updateStatusById(@RequestParam Long id, @RequestParam AppointmentStatus status) {
+        viewAppointmentService.lambdaUpdate()
+                .eq(ViewAppointment::getId, id)
+                .set(ViewAppointment::getAppointmentStatus, status)
+                .update();
         return Result.ok();
     }
 
