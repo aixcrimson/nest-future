@@ -1,6 +1,7 @@
 package com.atguigu.lease.web.admin.controller.login;
 
 
+import com.atguigu.lease.common.login.LoginUserHolder;
 import com.atguigu.lease.common.result.Result;
 import com.atguigu.lease.web.admin.service.LoginService;
 import com.atguigu.lease.web.admin.vo.login.CaptchaVo;
@@ -36,6 +37,7 @@ public class LoginController {
     @Operation(summary = "获取登陆用户个人信息")
     @GetMapping("info")
     public Result<SystemUserInfoVo> info() {
-        return Result.ok();
+        SystemUserInfoVo userInfoVo = loginService.getLoginUserInfo(LoginUserHolder.getLoginUser().getUserId());
+        return Result.ok(userInfoVo);
     }
 }
