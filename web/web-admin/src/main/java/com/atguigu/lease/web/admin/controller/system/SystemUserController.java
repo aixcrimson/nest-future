@@ -11,8 +11,11 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import java.nio.charset.StandardCharsets;
 
 
 @Tag(name = "后台用户信息管理")
@@ -41,6 +44,10 @@ public class SystemUserController {
     @Operation(summary = "保存或更新后台用户信息")
     @PostMapping("saveOrUpdate")
     public Result saveOrUpdate(@RequestBody SystemUser systemUser) {
+        if(systemUser.getPassword() != null){
+            systemUser.setPassword(DigestUtils.md5Hex(systemUser.getPassword()));
+        }
+        systemUserService.saveOrUpdate(systemUser);
         return Result.ok();
     }
 
