@@ -4,4 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.lease.web.app.mapper.PaymentTypeMapper">
 
+
+    <select id="listByRoomId" resultType="com.atguigu.lease.model.entity.PaymentType"
+            parameterType="java.lang.Long">
+        SELECT pt.id,
+               pt.name,
+               pt.pay_month_count,
+               pt.additional_info
+        FROM payment_type pt
+                 JOIN room_payment_type rpt ON rpt.payment_type_id = pt.id
+        WHERE pt.is_deleted = 0
+          and rpt.is_deleted = 0
+          and rpt.room_id = #{roomId}
+    </select>
 </mapper>
