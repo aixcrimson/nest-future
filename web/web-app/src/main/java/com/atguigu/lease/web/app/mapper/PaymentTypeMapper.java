@@ -14,6 +14,8 @@ import java.util.List;
 public interface PaymentTypeMapper extends BaseMapper<PaymentType> {
 
     List<PaymentType> listByRoomId(Long roomId);
+
+    List<PaymentType> selectListByRoomId(Long id);
 }
 
 
