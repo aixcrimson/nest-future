@@ -32,7 +32,8 @@ public class LeaseAgreementController {
     @Operation(summary = "根据id获取租约详细信息")
     @GetMapping("getDetailById")
     public Result<AgreementDetailVo> getDetailById(@RequestParam Long id) {
-        return Result.ok();
+        AgreementDetailVo agreementDetailVo = leaseAgreementService.getDetailById(id);
+        return Result.ok(agreementDetailVo);
     }
 
     @Operation(summary = "根据id更新租约状态", description = "用于确认租约和提前退租")
