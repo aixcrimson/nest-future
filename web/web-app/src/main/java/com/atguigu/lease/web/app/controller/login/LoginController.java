@@ -1,7 +1,9 @@
 package com.atguigu.lease.web.app.controller.login;
 
 
+import com.atguigu.lease.common.login.LoginUserHolder;
 import com.atguigu.lease.common.result.Result;
+import com.atguigu.lease.model.entity.UserInfo;
 import com.atguigu.lease.web.app.service.LoginService;
 import com.atguigu.lease.web.app.vo.user.LoginVo;
 import com.atguigu.lease.web.app.vo.user.UserInfoVo;
@@ -35,7 +37,8 @@ public class LoginController {
     @GetMapping("info")
     @Operation(summary = "获取登录用户信息")
     public Result<UserInfoVo> info() {
-        return Result.ok();
+        UserInfoVo userInfoVo = loginService.getUserInfoById(LoginUserHolder.getLoginUser().getUserId());
+        return Result.ok(userInfoVo);
     }
 }
 

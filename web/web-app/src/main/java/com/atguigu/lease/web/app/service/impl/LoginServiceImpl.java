@@ -10,7 +10,9 @@ import com.atguigu.lease.model.entity.UserInfo;
 import com.atguigu.lease.model.enums.BaseStatus;
 import com.atguigu.lease.web.app.mapper.UserInfoMapper;
 import com.atguigu.lease.web.app.service.LoginService;
+import com.atguigu.lease.web.app.service.UserInfoService;
 import com.atguigu.lease.web.app.vo.user.LoginVo;
+import com.atguigu.lease.web.app.vo.user.UserInfoVo;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +29,8 @@ public class LoginServiceImpl implements LoginService {
     private StringRedisTemplate stringRedisTemplate;
     @Autowired
     private UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserInfoService userInfoService;
 
     @Override
     public void getCode(String phone) {
@@ -58,7 +62,7 @@ public class LoginServiceImpl implements LoginService {
             user = new UserInfo();
             user.setPhone(loginVo.getPhone());
             user.setStatus(BaseStatus.ENABLE);
-            user.setNickname(RandomUtil.randomString("用户", 6));
+            user.setNickname("用户_" + RandomUtil.randomString(6));
             userInfoMapper.insert(user);
         }
         // 4.判断用户是否已禁用
@@ -69,5 +73,11 @@ public class LoginServiceImpl implements LoginService {
         String token = JwtUtil.createToken(user.getId(), user.getPhone());
         // 6.返回
         return token;
+    }
+
+    @Override
+    public UserInfoVo getUserInfoById(Long userId) {
+        UserInfo userInfo = userInfoService.getById(userId);
+        return new UserInfoVo(userInfo.getNickname(), userInfo.getAvatarUrl());
     }
 }
